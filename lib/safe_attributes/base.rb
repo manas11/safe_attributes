@@ -29,9 +29,9 @@ module SafeAttributes
       # attribute() method if that method name is in the list of
       # bad names
       #
-      def define_method_attribute(attr_name)
+      def define_method_attribute(attr_name, owner)
         return if (bad_attribute_names.include?(attr_name.to_sym))
-        super(attr_name)
+        super(attr_name, owner)
       end
 
       #
@@ -39,14 +39,14 @@ module SafeAttributes
       # attribute= method if that method name is in the list of
       # bad names
       #
-      def define_method_attribute=(attr_name)
+      def define_method_attribute=(attr_name, owner)
         method = attr_name + '='
         return if (bad_attribute_names.include?(method.to_sym))
-        super(attr_name)
+        super(attr_name, owner)
       end
 
       def instance_method_already_implemented?(method_name)
-        begin 
+        begin
           return super(method_name)
         rescue ActiveRecord::DangerousAttributeError
           return true
